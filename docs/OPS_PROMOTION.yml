@@ -1,0 +1,82 @@
+version: 1
+
+slos:
+  frontmatter_compliance_pct: 100
+  linkcheck_failures_7d: 0
+  drift_lint_failures_7d: 0
+  drt_p95_minutes: 3
+  weekly_rollup_present: true
+
+promotions:
+  to_phase_2:  # Context Pack + Checkpoints
+    require_slos_green_days: 7
+    triggers_any:
+      - metric: override_per_session_median
+        op: ">="
+        value: 2
+        window: "2w"
+      - metric: context_reprime_per_session_median
+        op: ">="
+        value: 1
+        window: "2w"
+      - metric: chronicle_docs_count
+        op: ">="
+        value: 40
+      - metric: corpus_words
+        op: ">="
+        value: 50000
+      - metric: decisions_per_week
+        op: ">="
+        value: 3
+      - metric: files_changed_per_week
+        op: ">="
+        value: 10
+      - metric: drt_p95_minutes
+        op: ">"
+        value: 3
+
+  to_phase_3:  # Lightweight RAG
+    triggers_any:
+      - metric: findit_success_rate
+        op: "<"
+        value: 0.90
+        window: "2w"
+      - metric: findit_median_seconds
+        op: ">"
+        value: 60
+        window: "2w"
+      - metric: reference_ambiguity_incidents_per_week
+        op: ">="
+        value: 3
+      - metric: md_files_total
+        op: ">="
+        value: 120
+      - metric: decisions_total
+        op: ">="
+        value: 35
+      - metric: context_pack_pages
+        op: ">"
+        value: 2
+
+  to_phase_4:  # Orchestration/Digests
+    triggers_any:
+      - metric: active_contributors
+        op: ">="
+        value: 2
+      - metric: prs_per_week
+        op: ">="
+        value: 5
+      - metric: decisions_per_week
+        op: ">="
+        value: 7
+      - metric: checkpoints_per_month
+        op: ">="
+        value: 2
+      - metric: handoff_misses_per_week
+        op: ">="
+        value: 1
+
+safety:
+  freeze_on_core_slo_violation: true
+  soak_time_after_promotion_days: 14
+  require_decision_note: true
