@@ -1,0 +1,36 @@
+version: 1
+name: "CIS Harness"
+mission: >
+  Provide portable guardrails and lightweight rituals that turn stress signals
+  (drift, ambiguity, context loss) into safe, incremental upgrades—without
+  creating monitoring or process collapse.
+
+policies:
+  - "This repo holds harness policies, templates, and optional jobs only."
+  - "No domain content or private data."
+  - "All automation must be offline-first and budget-capped."
+  - "Every new adaptation must be reversible and sunset-dated."
+
+consumption:
+  modes:
+    - "submodule"
+    - "copy-select"
+  required_files_for_minimal_use:
+    - "docs/CHARTER.yml"
+    - "README.md"
+
+compatibility:
+  runtime: "GitHub + plain Python (no external services required)"
+  min_ci_rights: "contents: write"
+
+ownership:
+  roles:
+    - id: ROLE-OPS
+      name: "Operator"
+      responsibilities:
+        - "Approves new gates and budgets"
+        - "Monitors rollups and promotions"
+    - id: ROLE-ARCH
+      name: "Harness Architect"
+      responsibilities:
+        - "Keeps policies minimal and reversible"
